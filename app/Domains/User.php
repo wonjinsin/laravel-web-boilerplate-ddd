@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains;
 
-class User
+class UserDomain
 {
 
 	/**	
@@ -118,7 +118,7 @@ class User
 	 * 
 	 * @return array
 	 */
-	public function createUserForRepository(): array{
+	public function createUserForRepo(): array{
 		return array(
 			'id' => $this->id,
 			'name' => $this->name,
