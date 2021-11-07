@@ -13,7 +13,6 @@ use Illuminate\Support\Str;
  */
 class BaseModel extends Model
 {
-
 	/**
 	 * Get an attribute from the model.
 	 *
@@ -21,7 +20,7 @@ class BaseModel extends Model
 	 * @return mixed
 	 */
 	public function getAttribute($key)
-	{	
+	{
 		if (array_key_exists($key, $this->relations)) {
 			return parent::getAttribute($key);
 		} else {

@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
 
 class UserController extends Controller
 {
@@ -26,43 +27,71 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function createUser(Request $request)
     {
-        //
+        $input = $request->input();
+        $userService = new UserService;
+        $data['resultData'] = $userService->createUser($input);
+
+        return $data;
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified user.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($userID)
+    public function getUserList()
     {
         $userService = new UserService;
-        $returnVal['data'] = new UserResource($userService->getUser($userID));
+        $data['resultData'] = new UserCollection($userService->getUserList());
+
+        return $data;
+    }
+
+    /**
+     * Display the specified user.
+     *
+     * @param  int  $userID
+     * @return \Illuminate\Http\Response
+     */
+    public function getUser($userID)
+    {
+        $userService = new UserService;
+        $data['resultData'] = new UserResource($userService->getUser($userID));
+
+        return $data;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $userID
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateUser(Request $request, $userID)
     {
-        //
+        $input = $request->input();
+        $userService = new UserService;
+
+        $user = $userService->updateUser($userID, $input);
+        $data['resultData'] = $user;
+
+        return $data;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $userID
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteUser($userID)
     {
-        //
+        $userService = new UserService;
+        $data['resultData'] = $userService->DeleteUser($userID);
+
+        return $data;
     }
 }

@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use App\Exceptions\CustomException;
+use Illuminate\Support\Facades\Log;
 
 class Handler extends ExceptionHandler
 {
@@ -35,7 +37,13 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            Log::error($e->getMessage());
+        });
+
+        $this->renderable(function (Throwable $e, $request) {
+            return response()->json([
+                'message' => 'Invalid Error Occurred'
+            ], 500);
         });
     }
 }
