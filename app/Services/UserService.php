@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Utils\CustomLogger;
+use App\Utils\CLOG;
 
 class UserService
 {
@@ -24,7 +24,7 @@ class UserService
 
 	public function getUser($userID)
 	{
-		CustomLogger::Info('test123');
+		CLOG::Info('getUser', debug_backtrace(), array('userID' => $userID));
 
 		$userRepo = new UserRepository;
 		return $userRepo->getUser($userID);
