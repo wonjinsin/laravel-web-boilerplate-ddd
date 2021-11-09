@@ -4,6 +4,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
+define('TRID', explode(".", gmdate("YmdHis.u"))[0] . substr(explode(".", gmdate("YmdHis.u"))[1], 0, 1) . rand(1001, 9999));
 
 /*
 |--------------------------------------------------------------------------

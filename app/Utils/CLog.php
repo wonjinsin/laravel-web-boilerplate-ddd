@@ -6,11 +6,13 @@ namespace App\Utils;
 
 use Illuminate\Support\Facades\Log;
 
-class CLog {
-	static function getFormattedString(string $msg, array $trace){
+class CLog
+{
+	static function getFormattedString(string $msg, array $trace)
+	{
 		$rootDir = dirname(dirname(dirname(__FILE__))) . '/';
 
-		$str  = sprintf('{"trid": "%d", ', config('logging.TRID'));
+		$str  = sprintf('{"trid": "%d", ', TRID);
 		$str .= isset($trace['method']) ? sprintf('"method": "%s", ', $trace['method']) : '';
 		$str .= isset($trace['uri']) ? sprintf('"uri": "%s", ', $trace['uri']) : '';
 		$str .= isset($trace['remoteIP']) ? sprintf('"remote_ip": "%s", ', $trace['remoteIP']) : '';
@@ -23,12 +25,13 @@ class CLog {
 		return $str;
 	}
 
-	static function Info(string $msg = '', array $trace = array(), array $info = array()) {
+	static function Info(string $msg = '', array $trace = array(), array $info = array())
+	{
 		Log::channel('stderr')->info(self::getFormattedString($msg, array_shift($trace)), $info);
 	}
 
-	static function InfoForController(string $msg = '', array $trace = array(), array $info = array()) {
+	static function InfoForController(string $msg = '', array $trace = array(), array $info = array())
+	{
 		Log::channel('stderr')->info(self::getFormattedString($msg, array_shift($trace)), $info);
 	}
-
 }

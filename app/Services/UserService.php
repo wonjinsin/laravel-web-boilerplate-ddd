@@ -12,6 +12,7 @@ class UserService
 {
 	public function createUser($input)
 	{
+		CLOG::Info('createUser', debug_backtrace(), array('input' => $input));
 		$userRepo = new UserRepository;
 		return $userRepo->createUser($input);
 	}
@@ -32,6 +33,8 @@ class UserService
 
 	public function updateUser($userID, $input)
 	{
+		CLOG::Info('UpdateUser', debug_backtrace(), array('userID' => $userID, 'input' => $input));
+
 		$rUser = $this->getUser($userID);
 		if (!$rUser) return false;
 
@@ -39,8 +42,10 @@ class UserService
 		return $userRepo->updateUser($rUser, $input);
 	}
 
-	public function DeleteUser($userID)
+	public function deleteUser($userID)
 	{
+		CLOG::Info('deleteUser', debug_backtrace(), array('userID' => $userID));
+
 		$rUser = $this->getUser($userID);
 		$userRepo = new UserRepository;
 		return $userRepo->deleteUser($rUser);
