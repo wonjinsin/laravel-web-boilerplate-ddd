@@ -6,6 +6,8 @@ namespace App\Services;
 
 use App\Repositories\UserRepository;
 use App\Utils\CLOG;
+use App\Utils\CError;
+use App\Exceptions\GeneralException;
 
 class UserService
 {
@@ -26,6 +28,7 @@ class UserService
 	{
 		CLOG::info('getUser', debug_backtrace(), array('userID' => $userID));
 		$userRepo = new UserRepository;
+
 		return $userRepo->getUser($userID);
 	}
 

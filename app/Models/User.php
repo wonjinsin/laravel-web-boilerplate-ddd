@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Domains\UserDomain;
+use App\Domains\User\UserDomain;
 use App\Models\BaseModel;
 
 class User extends BaseModel

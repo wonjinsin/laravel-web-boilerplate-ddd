@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Domains\UserDomain;
 use App\Repositories\UserRepository;
 
 class TasksController extends Controller
