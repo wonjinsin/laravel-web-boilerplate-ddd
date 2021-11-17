@@ -6,19 +6,17 @@ namespace App\Repositories;
 
 use Throwable;
 use App\Models\User;
-use App\Exceptions\CustomException;
-use App\Utils\CLOG;
-
+use App\Facades\CLog;
 class UserRepository
 {
 	public function createUser($input)
 	{
-		CLOG::info('CreateUser', debug_backtrace(), array('input' => $input));
+		CLog::info('CreateUser', debug_backtrace(), array('input' => $input));
 		$rUser = new User();
 		try {
 			$rUser = User::create($input);
 		} catch (Throwable $e) {
-			CLOG::warn('CreateUser Failed. ' . $e->getMessage(), debug_backtrace(), array('input' => $input));
+			CLog::warn('CreateUser Failed. ' . $e->getMessage(), debug_backtrace(), array('input' => $input));
 			return false;
 		}
 
@@ -27,28 +25,32 @@ class UserRepository
 
 	public function getUserList()
 	{
-		CLOG::info('getUserList', debug_backtrace());
+		CLog::info('getUserList', debug_backtrace());
 		$rUsers = User::all()->where('id', '=', '21323');
 		return $rUsers;
 	}
 
 	public function getUser($userID)
 	{
-		CLOG::info('updateUser', debug_backtrace(), array('userID' => $userID));
+		CLog::info('updateUser', debug_backtrace(), array('userID' => $userID));
 		$rUser = User::find($userID);
+		// $rUser2 = User::check123();
+
+		// var_dump($rUser2::check123());
+
 		return $rUser;
 	}
 
 	public function updateUser($rUser, $input)
 	{
-		CLOG::info('updateUser', debug_backtrace(), array('rUser' => $rUser, 'input' => $input));
+		CLog::info('updateUser', debug_backtrace(), array('rUser' => $rUser, 'input' => $input));
 		$rUser->updateUser($input);
 		return $rUser->save();
 	}
 
 	public function deleteUser($rUser)
 	{
-		CLOG::info('deleteUser', debug_backtrace(), array('rUser' => $rUser));
+		CLog::info('deleteUser', debug_backtrace(), array('rUser' => $rUser));
 		return $rUser->delete();
 	}
 }

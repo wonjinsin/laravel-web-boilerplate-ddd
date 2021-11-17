@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\User;
 
-use Illuminate\Support\Str;
-
 trait UserDomain
 {
 	/**

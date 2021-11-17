@@ -24,32 +24,32 @@ class CLog
 		return $str;
 	}
 
-	static function info(string $msg = '', array $trace = array(), array $info = array())
+	static public function info(string $msg = '', array $trace = array(), array $info = array())
 	{
 		return Log::channel('stderr')->info(self::getFormattedString(new LogDomain($msg, $trace, $info)));
 	}
 
-	static function infoForResult(string $msg = '', array $trace = array(), array $info = array())
+	static public function infoForResult(string $msg = '', array $trace = array(), array $info = array())
 	{
 		return Log::channel('stderr')->info(self::getFormattedString(new LogDomain($msg, $trace, $info, request())));
 	}
 
-	static function warn(string $msg = '', array $trace = array(), array $info = array())
+	static public function warn(string $msg = '', array $trace = array(), array $info = array())
 	{
 		return Log::channel('stderr')->warning(self::getFormattedString(new LogDomain($msg, $trace, $info)));
 	}
 
-	static function warnForResult(string $msg = '', array $trace = array(), array $info = array())
+	static public function warnForResult(string $msg = '', array $trace = array(), array $info = array())
 	{
 		return Log::channel('stderr')->warning(self::getFormattedString(new LogDomain($msg, $trace, $info, request())));
 	}
 
-	static function error(string $msg = '', array $trace = array(), array $info = array())
+	static public function error(string $msg = '', array $trace = array(), array $info = array())
 	{
 		return Log::channel('stderr')->error(self::getFormattedString(new LogDomain($msg, $trace, $info)));
 	}
 
-	static function erroForResult(string $msg = '', array $trace = array(), array $info = array())
+	static public function erroForResult(string $msg = '', array $trace = array(), array $info = array())
 	{
 		return Log::channel('stderr')->error(self::getFormattedString(new LogDomain($msg, $trace, $info, request())));
 	}

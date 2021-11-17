@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace App\Utils;
 
-use App\Exceptions\GeneralException;
-
 class CError {
-	static $message;
+	private $httpStatus;
 
-	public static function set($message) {
-		self::$message = $message;
+	static $httpCode;
+	static $httpMsg;
+	static $msg;
+
+	function __construct(){
+	}
+
+	public static function set($httpMsg, $msg) {
+		self::$httpMsg = $httpMsg;
+		self::$msg = $msg;
 	}
 
 	public static function get() {
-		return self::$message;
+		return self::$msg;
 	}
 }
