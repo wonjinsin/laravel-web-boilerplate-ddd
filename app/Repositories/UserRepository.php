@@ -7,6 +7,7 @@ namespace App\Repositories;
 use Throwable;
 use App\Models\User;
 use App\Facades\CLog;
+use App\Facades\CError;
 class UserRepository
 {
 	public function createUser($input)
@@ -34,9 +35,10 @@ class UserRepository
 	{
 		CLog::info('updateUser', debug_backtrace(), array('userID' => $userID));
 		$rUser = User::find($userID);
-		// $rUser2 = User::check123();
 
-		// var_dump($rUser2::check123());
+		if (!$rUser) {
+			return CError::set('Too Many Requests	', 'User is not exist');
+		}
 
 		return $rUser;
 	}

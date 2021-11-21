@@ -28,6 +28,7 @@ class UserService
 		CLog::info('getUser', debug_backtrace(), array('userID' => $userID));
 		$userRepo = new UserRepository;
 
+		$t = CError::set('Too Many Requests	', 'User is not exist');
 		return $userRepo->getUser($userID);
 	}
 

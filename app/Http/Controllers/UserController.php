@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,6 +9,8 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
 use App\Facades\CLog;
 use App\Utils\CError;
+use App\Utils\CResponse;
+use Illuminate\Support\Facades\Config;
 
 class UserController extends Controller
 {
@@ -56,9 +57,7 @@ class UserController extends Controller
         $userService = new UserService;
         $user = $userService->getUser($userID);
         
-        $data['resultData'] = new UserResource($user);
-
-        return $data;
+        return CResponse::response(Config::get('constants.httpCode.httpOK'), 'success', new UserResource($user));
     }
 
     /**
