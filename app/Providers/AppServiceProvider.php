@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Utils\CLog;
-use App\Domains\Logger\LogDomain;
+use App\Services\UserService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,8 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('clog', function () {
-            return new CLog;
-        });
+		$this->app->singleton('userservice', function () {
+			return new UserService;
+		});
     }
 }

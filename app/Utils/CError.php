@@ -39,6 +39,6 @@ class CError
 
 	public static function getMsg()
 	{
-		return isset(self::$msg) ? self::$msg: 'Request success';
+		return isset(self::$msg) ? self::$msg: 'Request Success';
 	}
 }

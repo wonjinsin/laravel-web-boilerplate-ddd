@@ -6,8 +6,9 @@ namespace App\Repositories;
 
 use Throwable;
 use App\Models\User;
-use App\Facades\CLog;
-use App\Facades\CError;
+use App\Utils\CLog;
+use App\Utils\CError;
+
 class UserRepository
 {
 	public function createUser($input)
@@ -18,7 +19,7 @@ class UserRepository
 			$rUser = User::create($input);
 		} catch (Throwable $e) {
 			CLog::warn('CreateUser Failed. ' . $e->getMessage(), debug_backtrace(), array('input' => $input));
-			return false;
+			return CError::set('Bad Request', 'CreateUser failed');
 		}
 
 		return $rUser;
@@ -26,18 +27,19 @@ class UserRepository
 
 	public function getUserList()
 	{
-		CLog::info('getUserList', debug_backtrace());
-		$rUsers = User::all()->where('id', '=', '21323');
+		CLog::info('GetUserList', debug_backtrace());
+		$rUsers = User::all();
 		return $rUsers;
 	}
 
 	public function getUser($userID)
 	{
-		CLog::info('updateUser', debug_backtrace(), array('userID' => $userID));
+		CLog::info('GetUser', debug_backtrace(), array('userID' => $userID));
 		$rUser = User::find($userID);
 
 		if (!$rUser) {
-			return CError::set('Too Many Requests	', 'User is not exist');
+			CLog::warn('GetUser failed', debug_backtrace(), array('userID' => $userID));
+			return CError::set('Not Found', 'User is not exist');
 		}
 
 		return $rUser;
@@ -45,14 +47,28 @@ class UserRepository
 
 	public function updateUser($rUser, $input)
 	{
-		CLog::info('updateUser', debug_backtrace(), array('rUser' => $rUser, 'input' => $input));
+		CLog::info('UpdateUser', debug_backtrace(), array('rUser' => $rUser, 'input' => $input));
 		$rUser->updateUser($input);
-		return $rUser->save();
+		$result = $rUser->save();
+
+		if (!$result) {
+			CLog::warn('UpdateUser save failed', debug_backtrace(), array('rUser' => $rUser, 'input' => $input));
+			return CError::set('Bad Request', 'UpdateUser save failed');
+		}
+
+		return $rUser;
 	}
 
 	public function deleteUser($rUser)
 	{
-		CLog::info('deleteUser', debug_backtrace(), array('rUser' => $rUser));
-		return $rUser->delete();
+		CLog::info('DeleteUser', debug_backtrace(), array('rUser' => $rUser));
+
+		$result = $rUser->delete();
+		if (!$result) {
+			CLog::warn('DeleteUser failed', debug_backtrace(), array('rUser' => $rUser));
+			return CError::set('Bad Request', 'UpdateUser save failed');
+		}
+
+		return $rUser;
 	}
 }

@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use App\Utils\CLog;
+use App\Utils\CResponse;
+use Illuminate\Support\Facades\Config;
 
 class Handler extends ExceptionHandler
 {
@@ -40,9 +42,7 @@ class Handler extends ExceptionHandler
         })->stop();
 
         $this->renderable(function (Throwable $e) {
-            return response()->json([
-                'message' => 'Invalid Error Occurred. message: ' . $e->getMessage()
-            ], 500);
+            return CResponse::response(Config::get('constants.httpCode.ServerError'), 'Internal Error Occurred. '. $e->getMessage());
         });
     }
 }

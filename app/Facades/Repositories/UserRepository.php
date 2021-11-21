@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Facades;
+namespace App\Facades\Repositories;
 
 use Illuminate\Support\Facades\Facade;
 
-class CLog extends Facade
+class UserRepository extends Facade
 {
 	/**
 	 * Get the registered name of the component.
@@ -13,6 +13,6 @@ class CLog extends Facade
 	 */
 	protected static function getFacadeAccessor()
 	{
-		return 'clog';
+		return 'userrepository';
 	}
 }

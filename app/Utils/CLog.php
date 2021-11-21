@@ -6,6 +6,7 @@ namespace App\Utils;
 
 use Illuminate\Support\Facades\Log;
 use App\Domains\Logger\LogDomain;
+use Throwable;
 
 class CLog
 {
@@ -23,6 +24,17 @@ class CLog
 
 		return $str;
 	}
+
+	static private function getErrorString(LogDomain $ld)
+	{
+		$str  = sprintf('{"trid": "%d", ', TRID);
+		$str .= $ld->getMsg() ? sprintf('"msg": "%s", ', $ld->getMsg()) : '';
+		$str .= $ld->getInfo() ? '"errors": "'.implode(',', $ld->getInfo()).'"' : '';
+		$str .= sprintf('}');
+
+		return $str;
+	}
+
 
 	static public function info(string $msg = '', array $trace = array(), array $info = array())
 	{
@@ -46,6 +58,9 @@ class CLog
 
 	static public function error(string $msg = '', array $trace = array(), array $info = array())
 	{
+		if (isset($info['error']) && $info['error'] instanceof Throwable) {
+			return Log::channel('stderr')->error(self::getErrorString(new LogDomain($msg, $trace, $info)));
+		}
 		return Log::channel('stderr')->error(self::getFormattedString(new LogDomain($msg, $trace, $info)));
 	}
 
