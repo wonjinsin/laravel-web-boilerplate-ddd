@@ -31,6 +31,11 @@ trait UserDomain
 		'deletedAt',
 	];
 
+	/**
+	 * Update UserDomain
+	 * 
+	 * @return void
+	 */
 	public function updateUser($input)
 	{
 		if (isset($input['email']) && $this->getOriginal('email') !== $input['email']) {

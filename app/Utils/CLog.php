@@ -10,6 +10,12 @@ use Throwable;
 
 class CLog
 {
+	/**
+	 * Get formatted string.
+	 * 
+	 * @param App\Domains\Logger\LogDomain $ld
+	 * @return string
+	 */
 	static private function getFormattedString(LogDomain $ld)
 	{
 		$str  = sprintf('{"trid": "%d", ', TRID);
@@ -25,47 +31,61 @@ class CLog
 		return $str;
 	}
 
+	/**
+	 * Get error string.
+	 * 
+	 * @param App\Domains\Logger\LogDomain $ld
+	 * @return string
+	 */
 	static private function getErrorString(LogDomain $ld)
 	{
 		$str  = sprintf('{"trid": "%d", ', TRID);
 		$str .= $ld->getMsg() ? sprintf('"msg": "%s", ', $ld->getMsg()) : '';
-		$str .= $ld->getInfo() ? '"errors": "'.implode(',', $ld->getInfo()).'"' : '';
+		$str .= $ld->getInfo() ? '"errors": "' . implode(',', $ld->getInfo()) . '"' : '';
 		$str .= sprintf('}');
 
 		return $str;
 	}
 
-
+	/**
+	 * Logging info.
+	 * 
+	 * @param string $msg
+	 * @param array $trace
+	 * @param array $info
+	 * @return void
+	 */
 	static public function info(string $msg = '', array $trace = array(), array $info = array())
 	{
-		return Log::channel('stderr')->info(self::getFormattedString(new LogDomain($msg, $trace, $info)));
+		Log::channel('stderr')->info(self::getFormattedString(new LogDomain($msg, $trace, $info)));
 	}
 
-	static public function infoForResult(string $msg = '', array $trace = array(), array $info = array())
-	{
-		return Log::channel('stderr')->info(self::getFormattedString(new LogDomain($msg, $trace, $info, request())));
-	}
-
+	/**
+	 * Logging warn.
+	 * 
+	 * @param string $msg
+	 * @param array $trace
+	 * @param array $info
+	 * @return void
+	 */
 	static public function warn(string $msg = '', array $trace = array(), array $info = array())
 	{
 		return Log::channel('stderr')->warning(self::getFormattedString(new LogDomain($msg, $trace, $info)));
 	}
 
-	static public function warnForResult(string $msg = '', array $trace = array(), array $info = array())
-	{
-		return Log::channel('stderr')->warning(self::getFormattedString(new LogDomain($msg, $trace, $info, request())));
-	}
-
+	/**
+	 * Logging error.
+	 * 
+	 * @param string $msg
+	 * @param array $trace
+	 * @param array $info
+	 * @return void
+	 */
 	static public function error(string $msg = '', array $trace = array(), array $info = array())
 	{
 		if (isset($info['error']) && $info['error'] instanceof Throwable) {
 			return Log::channel('stderr')->error(self::getErrorString(new LogDomain($msg, $trace, $info)));
 		}
 		return Log::channel('stderr')->error(self::getFormattedString(new LogDomain($msg, $trace, $info)));
-	}
-
-	static public function erroForResult(string $msg = '', array $trace = array(), array $info = array())
-	{
-		return Log::channel('stderr')->error(self::getFormattedString(new LogDomain($msg, $trace, $info, request())));
 	}
 }

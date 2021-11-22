@@ -11,10 +11,15 @@ use App\Utils\CError;
 
 class UserRepository
 {
+	/**
+	 * Create user in storage
+	 * 
+	 * @param mixed $input
+	 * @return App\Models\User|App\Utils\CError;
+	 */
 	public function createUser($input)
 	{
 		CLog::info('CreateUser', debug_backtrace(), array('input' => $input));
-		$rUser = new User();
 		try {
 			$rUser = User::create($input);
 		} catch (Throwable $e) {
@@ -24,14 +29,25 @@ class UserRepository
 
 		return $rUser;
 	}
-
+	
+	/**
+	 * get user list in storage
+	 * 
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]|App\Utils\CError;
+	 */
 	public function getUserList()
 	{
 		CLog::info('GetUserList', debug_backtrace());
 		$rUsers = User::all();
 		return $rUsers;
 	}
-
+	
+	/**
+	 * Get user in storage
+	 * 
+	 * @param int $userID
+	 * @return App\Models\User|App\Utils\CError;
+	 */
 	public function getUser($userID)
 	{
 		CLog::info('GetUser', debug_backtrace(), array('userID' => $userID));
@@ -45,6 +61,13 @@ class UserRepository
 		return $rUser;
 	}
 
+	/**
+	 * Update user in storage
+	 * 
+	 * @param App\Models\User $rUser
+	 * @param mixed $input
+	 * @return App\Models\User|App\Utils\CError;
+	 */
 	public function updateUser($rUser, $input)
 	{
 		CLog::info('UpdateUser', debug_backtrace(), array('rUser' => $rUser, 'input' => $input));
@@ -58,7 +81,14 @@ class UserRepository
 
 		return $rUser;
 	}
-
+	
+	/**
+	 * Update user in storage
+	 * 
+	 * @param App\Models\User $rUser
+	 * @param mixed $input
+	 * @return App\Models\User|App\Utils\CError;
+	 */
 	public function deleteUser($rUser)
 	{
 		CLog::info('DeleteUser', debug_backtrace(), array('rUser' => $rUser));

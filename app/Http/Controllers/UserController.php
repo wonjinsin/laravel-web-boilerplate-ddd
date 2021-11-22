@@ -16,10 +16,10 @@ use App\Facades\Services\UserService;
 class UserController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Create user in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Utils\CResponse
      */
     public function createUser(Request $request)
     {
@@ -35,9 +35,9 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified user.
+     * Display the specified user list.
      *
-     * @return \Illuminate\Http\Response
+     * @return \App\Utils\CResponse
      */
     public function getUserList()
     {
@@ -55,7 +55,7 @@ class UserController extends Controller
      * Display the specified user.
      *
      * @param  int  $userID
-     * @return \Illuminate\Http\Response
+     * @return \App\Utils\CResponse
      */
     public function getUser($userID)
     {
@@ -70,11 +70,12 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update user in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $userID
-     * @return \Illuminate\Http\Response
+     * 
+     * @return \App\Utils\CResponse
      */
     public function updateUser(Request $request, $userID)
     {
@@ -90,7 +91,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove user from storage.
      *
      * @param  int  $userID
      * @return \Illuminate\Http\Response
