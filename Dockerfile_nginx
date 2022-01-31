@@ -1,0 +1,7 @@
+FROM nginx
+
+WORKDIR /var/www/html
+COPY ./ .
+RUN chown -R nginx:nginx /var/www/html
+COPY ./phpdocker/nginx/eevee.conf /etc/nginx/conf.d
+RUN rm /etc/nginx/conf.d/default.conf || true

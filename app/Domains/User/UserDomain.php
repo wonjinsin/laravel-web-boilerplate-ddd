@@ -19,7 +19,7 @@ trait UserDomain
 	 * @var date updatedAt
 	 * @var date deletedAt
 	 */
-	protected $DefaultEntity = [
+	protected $userEntity = [
 		'id',
 		'name',
 		'password',

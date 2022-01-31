@@ -1,0 +1,34 @@
+version: "3.1"
+services:
+  eevee-webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile_nginx
+    image: eevee-webserver
+    container_name: eevee-webserver
+    working_dir: /var/www/html
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "18820:80"
+
+  eevee-php-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        IMAGE_TAG: |-
+          ${VERSION:-local}
+    image: eevee-php-fpm
+    container_name: eevee-php-fpm
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www/html
+
+networks:
+  default:
+    external:
+      name: app_default
