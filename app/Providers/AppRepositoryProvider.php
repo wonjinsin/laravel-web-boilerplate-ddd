@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\UserRepository;
+use App\Repositories\AuthRepository;
 
 class AppRepositoryProvider extends ServiceProvider
 {
@@ -14,8 +15,11 @@ class AppRepositoryProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app->singleton('userrepository', function () {
+		$this->app->singleton('userRepository', function () {
 			return new UserRepository;
+		});
+		$this->app->singleton('authRepository', function () {
+			return new AuthRepository;
 		});
 	}
 }

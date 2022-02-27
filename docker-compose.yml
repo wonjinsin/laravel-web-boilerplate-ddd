@@ -18,9 +18,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        IMAGE_TAG: |-
-          ${VERSION:-local}
     image: eevee-php-fpm
     container_name: eevee-php-fpm
     env_file:

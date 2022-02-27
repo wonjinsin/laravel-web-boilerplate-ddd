@@ -8,6 +8,7 @@ use Throwable;
 use App\Models\User;
 use App\Utils\CLog;
 use App\Utils\CError;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
@@ -21,10 +22,11 @@ class UserRepository
 	{
 		CLog::info('CreateUser', debug_backtrace(), array('input' => $input));
 		try {
+			$input['password'] = Hash::make($input['password']);
 			$rUser = User::create($input);
 		} catch (Throwable $e) {
 			CLog::warn('CreateUser Failed. ' . $e->getMessage(), debug_backtrace(), array('input' => $input));
-			return CError::set('Bad Request', 'CreateUser failed');
+			return new CError(402, 'CreateUser failed');
 		}
 
 		return $rUser;
@@ -55,7 +57,7 @@ class UserRepository
 
 		if (!$rUser) {
 			CLog::warn('GetUser failed', debug_backtrace(), array('userID' => $userID));
-			return CError::set('Not Found', 'User is not exist');
+			return new CError(404, 'User is not exist');
 		}
 
 		return $rUser;
@@ -76,7 +78,7 @@ class UserRepository
 
 		if (!$result) {
 			CLog::warn('UpdateUser save failed', debug_backtrace(), array('rUser' => $rUser, 'input' => $input));
-			return CError::set('Bad Request', 'UpdateUser save failed');
+			return new CError(402, 'UpdateUser save failed');
 		}
 
 		return $rUser;
@@ -96,7 +98,7 @@ class UserRepository
 		$result = $rUser->delete();
 		if (!$result) {
 			CLog::warn('DeleteUser failed', debug_backtrace(), array('rUser' => $rUser));
-			return CError::set('Bad Request', 'UpdateUser save failed');
+			return new CError(402, 'UpdateUser save failed');
 		}
 
 		return $rUser;

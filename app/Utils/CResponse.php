@@ -19,10 +19,18 @@ class CResponse
 	{
 		return response()->json(
 			array(
-				'resultCode' => $httpCode < 1000 ? 1000 + $httpCode: $httpCode,
+				'resultCode' => $httpCode,
 				'msg' => $msg,
 				'resultData' => $resultData
 			), $httpCode
 		);
+	}
+
+	public static function getStatus(int $httpCode): int{
+		$httpPackage = new \Lukasoppermann\Httpstatus\HttpStatus();
+		if ($httpPackage->hasStatusCode($httpCode)) {
+			return $httpCode;
+		}
+		return 500;
 	}
 }

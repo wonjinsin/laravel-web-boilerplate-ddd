@@ -13,6 +13,6 @@ class UserRepository extends Facade
 	 */
 	protected static function getFacadeAccessor()
 	{
-		return 'userrepository';
+		return 'userRepository';
 	}
 }

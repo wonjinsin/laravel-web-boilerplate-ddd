@@ -31,7 +31,7 @@ class UserService
 	{
 		return UserRepository::getUserList();
 	}
-	
+
 	/**
 	 * Get user in storage
 	 * 
@@ -53,7 +53,6 @@ class UserService
 	 */
 	public function updateUser($userID, $input)
 	{
-		CLog::info('UpdateUser', debug_backtrace(), array('userID' => $userID, 'input' => $input));
 		$rUser = $this->getUser($userID);
 
 		if ($rUser instanceof CError) {

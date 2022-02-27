@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Facades\Services;
+namespace App\Facades\Repositories;
 
 use Illuminate\Support\Facades\Facade;
 
-class UserService extends Facade
+class AuthRepository extends Facade
 {
 	/**
 	 * Get the registered name of the component.
@@ -13,6 +13,6 @@ class UserService extends Facade
 	 */
 	protected static function getFacadeAccessor()
 	{
-		return 'userService';
+		return 'authRepository';
 	}
 }

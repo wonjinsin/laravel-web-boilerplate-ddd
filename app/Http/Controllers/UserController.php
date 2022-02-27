@@ -23,12 +23,12 @@ class UserController extends Controller
      */
     public function createUser(Request $request)
     {
-        CLog::info('[New Request]', debug_backtrace(), array('input' => $request->input()));
+        CLog::info('[New Request] createUser', debug_backtrace(), array('input' => $request->input()));
         
         $input = $request->input();
         $rUser = UserService::createUser($input);
         if ($rUser instanceof CError) {
-            return CResponse::response($rUser::getHttpCode(), $rUser::getMsg());
+            return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
         return CResponse::response(Config::get('constants.httpCode.httpOK'), 'CreateUser OK', $rUser);
@@ -41,11 +41,11 @@ class UserController extends Controller
      */
     public function getUserList()
     {
-        CLog::info('[New Request]', debug_backtrace());
+        CLog::info('[New Request] getUserList', debug_backtrace());
 
         $rUsers = new UserCollection(UserService::getUserList());
         if ($rUsers instanceof CError) {
-            return CResponse::response($rUsers::getHttpCode(), $rUsers::getMsg());
+            return CResponse::response($rUsers->getHttpCode(), $rUsers->getMsg());
         }
 
         return CResponse::response(Config::get('constants.httpCode.httpOK'), 'GetuserList OK', $rUsers);
@@ -59,11 +59,11 @@ class UserController extends Controller
      */
     public function getUser($userID)
     {
-        CLog::info('[New Request]', debug_backtrace(), array('userID' => $userID));
+        CLog::info('[New Request] getUser', debug_backtrace(), array('userID' => $userID));
         
         $rUser = UserService::getUser($userID);
         if ($rUser instanceof CError) {
-            return CResponse::response($rUser::getHttpCode(), $rUser::getMsg());
+            return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
         return CResponse::response(Config::get('constants.httpCode.httpOK'), 'GetUser OK', new UserResource($rUser));
@@ -79,12 +79,12 @@ class UserController extends Controller
      */
     public function updateUser(Request $request, $userID)
     {
-        CLog::info('[New Request]', debug_backtrace(), array('userID' => $userID, 'input' => $request->input()));
+        CLog::info('[New Request] updateUser', debug_backtrace(), array('userID' => $userID, 'input' => $request->input()));
         
         $input = $request->input();
         $rUser = UserService::updateUser($userID, $input);
         if ($rUser instanceof CError) {
-            return CResponse::response($rUser::getHttpCode(), $rUser::getMsg());
+            return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
         return CResponse::response(Config::get('constants.httpCode.httpOK'), 'UpdateUser OK', new UserResource($rUser));
@@ -98,10 +98,10 @@ class UserController extends Controller
      */
     public function deleteUser($userID)
     {
-        CLog::info('[New Request]', debug_backtrace(), array('userID' => $userID));
+        CLog::info('[New Request] deleteUser', debug_backtrace(), array('userID' => $userID));
         $rUser = UserService::DeleteUser($userID);
         if ($rUser instanceof CError) {
-            return CResponse::response($rUser::getHttpCode(), $rUser::getMsg());
+            return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
         return CResponse::response(Config::get('constants.httpCode.httpOK'), 'DeleteUser OK', new UserResource($rUser));

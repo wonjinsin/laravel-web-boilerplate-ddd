@@ -29,6 +29,7 @@ trait UserDomain
 		'createdAt',
 		'updatedAt',
 		'deletedAt',
+		'token'
 	];
 
 	/**
@@ -44,5 +45,15 @@ trait UserDomain
 		if (isset($input['password']) && $this->getOriginal('password') !== $input['password']) {
 			$this->setAttribute('password', $input['password']);
 		}
+	}
+
+	/**
+	 * Generate token
+	 * 
+	 * @return void
+	 */
+	public function generateToken()
+	{
+		$this->setAttribute('token', $this->createToken($this->getAttribute('email'))->plainTextToken);
 	}
 }

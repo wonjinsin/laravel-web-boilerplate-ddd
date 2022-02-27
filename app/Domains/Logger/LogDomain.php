@@ -57,7 +57,7 @@ class LogDomain
 		if (isset($this->info['input']['password'])) {
 			$this->info['input']['password'] = '*****';
 		}
-		
+
 		return $this->info;
 	}
 	

@@ -4,7 +4,7 @@ namespace App\Facades\Services;
 
 use Illuminate\Support\Facades\Facade;
 
-class UserService extends Facade
+class AuthService extends Facade
 {
 	/**
 	 * Get the registered name of the component.
@@ -13,6 +13,6 @@ class UserService extends Facade
 	 */
 	protected static function getFacadeAccessor()
 	{
-		return 'userService';
+		return 'authService';
 	}
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,12 @@ use App\Http\Controllers\UserController;
 Route::prefix('user')->group(function () {
     Route::post('', [UserController::class, 'createUser']);
     Route::get('', [UserController::class, 'getUserList']);
+    Route::get('/login', [UserController::class, 'login']);
     Route::get('/{userID}', [UserController::class, 'getUser']);
     Route::put('/{userID}', [UserController::class, 'updateUser']);
     Route::delete('/{userID}', [UserController::class, 'deleteUser']);
+});
+
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
 });

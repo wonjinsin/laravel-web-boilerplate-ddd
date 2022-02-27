@@ -7,55 +7,51 @@ namespace App\Utils;
 class CError
 {
 	/**
-	 * @var CError
-	 */
-	private static $cerror;
-
-	/**
 	 * @var \Lukasoppermann\Httpstatus\Httpstatus;
 	 */
-	private static $httpPackage;
+	private $httpPackage;
 
 	/**
 	 * @var int
 	 */
-	private static $httpCode;
+	private $httpCode;
 
 	/**
 	 * @var string
 	 */
-	private static $msg;
+	private $msg;
 
 	/**
-	 * Get instance.
+	 * Contruct
 	 * 
-	 * @return CError
+	 * @param int $HttpCode
+	 * @param string @msg
+	 * @param int @customHttpCode
+	 * @return void
 	 */
-	public static function getInstance()
+	public function __construct(int $HttpCode = 400, $msg = 'Error occured')
 	{
-		if (!isset(CError::$cerror)) CError::$cerror = new CError('');
-		return CError::$cerror;
+		$this->httpPackage = new \Lukasoppermann\Httpstatus\HttpStatus();
+		$this->httpCode = $this->setHttpCode($HttpCode);
+		$this->msg = $this->setMsg($msg, $HttpCode);
 	}
 
-	/**
-	 * Set Error.
-	 * 
-	 * @param string $httpMsg
-	 * @param string $msg
-	 * @return CError
-	 */
-	public static function set($httpMsg = 'Internal Server Error', $msg = 'Error occured')
+	private function setHttpCode(int $httpCode = 400): int
 	{
-		self::$httpPackage = new \Lukasoppermann\Httpstatus\Httpstatus();
-		if (self::$httpPackage->hasReasonPhrase(($httpMsg))) {
-			self::$httpCode = self::$httpPackage->getStatusCode($httpMsg);
-		} else {
-			self::$httpCode = 500;
+		return $httpCode;
+	}
+
+	private function setMsg(string $msg, int $httpCode): string
+	{
+		if ($msg) {
+			return $msg;
 		}
 
-		self::$msg = $msg;
+		if (isset($httpCode) && $this->httpPackage->hasStatusHttpCode($httpCode)) {
+			return $this->httpPackage->getReasonPhrase($msg);
+		}
 
-		return self::getInstance();
+		return "Bad Request";
 	}
 
 	/**
@@ -63,9 +59,9 @@ class CError
 	 * 
 	 * @return int
 	 */
-	public static function getHttpCode()
+	public function getHttpCode()
 	{
-		return isset(self::$httpCode) ? self::$httpCode: 200;
+		return isset(self::$httpCode) ? self::$httpCode : 500;
 	}
 
 	/**
@@ -73,8 +69,8 @@ class CError
 	 * 
 	 * @return string
 	 */
-	public static function getMsg()
+	public function getMsg()
 	{
-		return isset(self::$msg) ? self::$msg: 'Request Success';
+		return isset($this->msg) ? $this->msg : 'Request Failed';
 	}
 }

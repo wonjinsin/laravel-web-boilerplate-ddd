@@ -23,6 +23,7 @@ class CLog
 		$str .= $ld->getTrace('uri') ? sprintf('"uri": "%s", ', $ld->getTrace('uri')) : '';
 		$str .= $ld->getTrace('remoteIP') ? sprintf('"remote_ip": "%s", ', $ld->getTrace('remoteIP')) : '';
 		$str .= $ld->getMsg() ? sprintf('"msg": "%s", ', $ld->getMsg()) : '';
+		$str .= $ld->getInfo() ? sprintf('"params": "%s", ', json_encode($ld->getInfo())) : '';
 		$str .= $ld->getTrace('status') ? sprintf('"status": "%d", ', $ld->getTrace('status')) : '';
 		$str .= $ld->getTrace('latency') ? sprintf('"latency": "%d", ', $ld->getTrace('latency')) : '';
 		$str .= $ld->getTrace('function') ? sprintf('"caller": "%s(%s:%d)"', $ld->getTrace('function'), $ld->getCurrentFile(), $ld->getTrace('line')) : '';
@@ -41,7 +42,7 @@ class CLog
 	{
 		$str  = sprintf('{"trid": "%d", ', TRID);
 		$str .= $ld->getMsg() ? sprintf('"msg": "%s", ', $ld->getMsg()) : '';
-		$str .= $ld->getInfo() ? '"errors": "' . implode(',', $ld->getInfo()) . '"' : '';
+		$str .= $ld->getInfo() ? sprintf('"params": "%s", ', json_encode($ld->getInfo())) : '';
 		$str .= sprintf('}');
 
 		return $str;
