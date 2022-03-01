@@ -61,7 +61,7 @@ class CError
 	 */
 	public function getHttpCode()
 	{
-		return isset(self::$httpCode) ? self::$httpCode : 500;
+		return isset($this->httpCode) ? $this->httpCode : 500;
 	}
 
 	/**

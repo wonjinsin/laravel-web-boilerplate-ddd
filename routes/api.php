@@ -16,14 +16,13 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::prefix('user')->group(function () {
-    Route::post('', [UserController::class, 'createUser']);
     Route::get('', [UserController::class, 'getUserList']);
-    Route::get('/login', [UserController::class, 'login']);
-    Route::get('/{userID}', [UserController::class, 'getUser']);
-    Route::put('/{userID}', [UserController::class, 'updateUser']);
-    Route::delete('/{userID}', [UserController::class, 'deleteUser']);
+    Route::get('/{uid}', [UserController::class, 'getUser']);
+    Route::put('/{uid}', [UserController::class, 'updateUser']);
+    Route::delete('/{uid}', [UserController::class, 'deleteUser']);
 });
 
 Route::prefix('auth')->group(function () {
+    Route::post('/signup', [AuthController::class, 'signup']);
     Route::post('/login', [AuthController::class, 'login']);
 });

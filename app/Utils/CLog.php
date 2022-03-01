@@ -56,7 +56,7 @@ class CLog
 	 * @param array $info
 	 * @return void
 	 */
-	static public function info(string $msg = '', array $trace = array(), array $info = array())
+	static public function info(string $msg = '', array $trace = [], array $info = [])
 	{
 		Log::channel('stderr')->info(self::getFormattedString(new LogDomain($msg, $trace, $info)));
 	}
@@ -69,7 +69,7 @@ class CLog
 	 * @param array $info
 	 * @return void
 	 */
-	static public function warn(string $msg = '', array $trace = array(), array $info = array())
+	static public function warn(string $msg = '', array $trace = [], array $info = [])
 	{
 		return Log::channel('stderr')->warning(self::getFormattedString(new LogDomain($msg, $trace, $info)));
 	}
@@ -82,7 +82,7 @@ class CLog
 	 * @param array $info
 	 * @return void
 	 */
-	static public function error(string $msg = '', array $trace = array(), array $info = array())
+	static public function error(string $msg = '', array $trace = [], array $info = [])
 	{
 		if (isset($info['error']) && $info['error'] instanceof Throwable) {
 			return Log::channel('stderr')->error(self::getErrorString(new LogDomain($msg, $trace, $info)));

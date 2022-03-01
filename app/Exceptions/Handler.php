@@ -38,7 +38,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            return CLog::error(sprintf('msg: %s, file: %s, %s', $e->getMessage(), $e->getFile(), $e->getLine()), [], array('error' => $e));
+            return CLog::error(sprintf('msg: %s, file: %s, %s', $e->getMessage(), $e->getFile(), $e->getLine()), [], ['error' => $e]);
         })->stop();
 
         $this->renderable(function (Throwable $e) {

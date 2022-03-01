@@ -16,25 +16,6 @@ use App\Facades\Services\UserService;
 class UserController extends Controller
 {
     /**
-     * Create user in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \App\Utils\CResponse
-     */
-    public function createUser(Request $request)
-    {
-        CLog::info('[New Request] createUser', debug_backtrace(), array('input' => $request->input()));
-        
-        $input = $request->input();
-        $rUser = UserService::createUser($input);
-        if ($rUser instanceof CError) {
-            return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
-        }
-
-        return CResponse::response(Config::get('constants.httpCode.httpOK'), 'CreateUser OK', $rUser);
-    }
-
-    /**
      * Display the specified user list.
      *
      * @return \App\Utils\CResponse
@@ -54,14 +35,14 @@ class UserController extends Controller
     /**
      * Display the specified user.
      *
-     * @param  int  $userID
+     * @param  int                  $uid
      * @return \App\Utils\CResponse
      */
-    public function getUser($userID)
+    public function getUser($uid)
     {
-        CLog::info('[New Request] getUser', debug_backtrace(), array('userID' => $userID));
-        
-        $rUser = UserService::getUser($userID);
+        CLog::info('[New Request] getUser', debug_backtrace(), ['uid' => $uid]);
+
+        $rUser = UserService::getUser($uid);
         if ($rUser instanceof CError) {
             return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
@@ -72,17 +53,16 @@ class UserController extends Controller
     /**
      * Update user in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $userID
-     * 
+     * @param  \Illuminate\Http\Request $request
+     * @param  int                      $uid
      * @return \App\Utils\CResponse
      */
-    public function updateUser(Request $request, $userID)
+    public function updateUser(Request $request, $uid)
     {
-        CLog::info('[New Request] updateUser', debug_backtrace(), array('userID' => $userID, 'input' => $request->input()));
-        
+        CLog::info('[New Request] updateUser', debug_backtrace(), ['uid' => $uid, 'input' => $request->input()]);
+
         $input = $request->input();
-        $rUser = UserService::updateUser($userID, $input);
+        $rUser = UserService::updateUser($uid, $input);
         if ($rUser instanceof CError) {
             return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
@@ -93,13 +73,13 @@ class UserController extends Controller
     /**
      * Remove user from storage.
      *
-     * @param  int  $userID
+     * @param  int                       $uid
      * @return \Illuminate\Http\Response
      */
-    public function deleteUser($userID)
+    public function deleteUser($uid)
     {
-        CLog::info('[New Request] deleteUser', debug_backtrace(), array('userID' => $userID));
-        $rUser = UserService::DeleteUser($userID);
+        CLog::info('[New Request] deleteUser', debug_backtrace(), ['uid' => $uid]);
+        $rUser = UserService::DeleteUser($uid);
         if ($rUser instanceof CError) {
             return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }

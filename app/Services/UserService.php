@@ -10,75 +10,64 @@ use App\Utils\CError;
 
 class UserService
 {
-	/**
-	 * Create user in storage
-	 * 
-	 * @param mixed $input
-	 * @return App\Models\User|App\Utils\CError;
-	 */
-	public function createUser($input)
-	{
-		CLog::info('createUser', debug_backtrace(), array('input' => $input));
-		return UserRepository::createUser($input);
-	}
+    /**
+     * get user list in storage
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]|App\Utils\CError;
+     */
+    public function getUserList()
+    {
+        CLog::info('getUserList', debug_backtrace());
+        return UserRepository::getUserList();
+    }
 
-	/**
-	 * get user list in storage
-	 * 
-	 * @return \Illuminate\Database\Eloquent\Collection|static[]|App\Utils\CError;
-	 */
-	public function getUserList()
-	{
-		return UserRepository::getUserList();
-	}
+    /**
+     * Get user in storage
+     *
+     * @param int $uid
+     * @return App\Models\User|App\Utils\CError;
+     */
+    public function getUser($uid)
+    {
+        CLog::info('getUser', debug_backtrace(), ['uid' => $uid]);
+        return UserRepository::getUser($uid);
+    }
 
-	/**
-	 * Get user in storage
-	 * 
-	 * @param int $userID
-	 * @return App\Models\User|App\Utils\CError;
-	 */
-	public function getUser($userID)
-	{
-		CLog::info('getUser', debug_backtrace(), array('userID' => $userID));
-		return UserRepository::getUser($userID);
-	}
+    /**
+     * Update user in storage
+     *
+     * @param int   $uid
+     * @param mixed $input
+     * @return App\Models\User|App\Utils\CError;
+     */
+    public function updateUser($uid, $input)
+    {
+        $rUser = $this->getUser($uid);
 
-	/**
-	 * Update user in storage
-	 * 
-	 * @param int $userID
-	 * @param mixed $input
-	 * @return App\Models\User|App\Utils\CError;
-	 */
-	public function updateUser($userID, $input)
-	{
-		$rUser = $this->getUser($userID);
+        if ($rUser instanceof CError) {
+            CLog::warn('UserService getUser failed', debug_backtrace(), ['uid' => $uid, 'input' => $input]);
+            return $rUser;
+        }
 
-		if ($rUser instanceof CError) {
-			CLog::warn('UserService getUser failed', debug_backtrace(), array('userID' => $userID, 'input' => $input));
-			return $rUser;
-		}
+        return UserRepository::updateUser($rUser, $input);
+    }
 
-		return UserRepository::updateUser($rUser, $input);
-	}
+    /**
+     * Delete user in storage
+     *
+     * @param int $uid
+     * @return App\Models\User|App\Utils\CError;
+     */
+    public function deleteUser($uid)
+    {
+        CLog::info('deleteUser', debug_backtrace(), ['uid' => $uid]);
 
-	/**
-	 * Delete user in storage
-	 * 
-	 * @param int $userID
-	 * @return App\Models\User|App\Utils\CError;
-	 */
-	public function deleteUser($userID)
-	{
-		CLog::info('deleteUser', debug_backtrace(), array('userID' => $userID));
+        $rUser = $this->getUser($uid);
+        if ($rUser instanceof CError) {
+            CLog::warn('UserService getUser failed', debug_backtrace(), ['uid' => $uid]);
+            return $rUser;
+        }
 
-		$rUser = $this->getUser($userID);
-		if ($rUser instanceof CError) {
-			CLog::warn('UserService getUser failed', debug_backtrace(), array('userID' => $userID));
-			return $rUser;
-		}
-
-		return UserRepository::deleteUser($rUser);
-	}
+        return UserRepository::deleteUser($rUser);
+    }
 }

@@ -21,10 +21,10 @@ class LogDomain
 	 */
 	private $info;
 
-	public function __construct(string $msg = '', array $trace = array(), array $info = array())
+	public function __construct(string $msg = '', array $trace = [], array $info = [])
 	{
 		$this->msg = $msg;
-		$this->trace = count($trace) ? array_shift($trace) : array();
+		$this->trace = count($trace) ? array_shift($trace) : [];
 		$this->info = $info;
 	}
 
