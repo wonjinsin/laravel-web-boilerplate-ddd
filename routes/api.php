@@ -18,8 +18,8 @@ use App\Http\Controllers\AuthController;
 Route::prefix('user')->group(function () {
     Route::get('', [UserController::class, 'getUserList']);
     Route::get('/{uid}', [UserController::class, 'getUser']);
-    Route::put('/{uid}', [UserController::class, 'updateUser']);
-    Route::delete('/{uid}', [UserController::class, 'deleteUser']);
+    Route::put('/{uid}', [UserController::class, 'updateUser'])->middleware('auth:sanctum');
+    Route::delete('/{uid}', [UserController::class, 'deleteUser'])->middleware('auth:sanctum');
 });
 
 Route::prefix('auth')->group(function () {

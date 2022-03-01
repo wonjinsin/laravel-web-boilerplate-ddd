@@ -38,11 +38,15 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            return CLog::error(sprintf('msg: %s, file: %s, %s', $e->getMessage(), $e->getFile(), $e->getLine()), [], ['error' => $e]);
+            return CLog::error($this->makeErrorMsg($e), [], ['error' => $e]);
         })->stop();
 
         $this->renderable(function (Throwable $e) {
-            return CResponse::response(Config::get('constants.httpCode.ServerError'), 'Internal Error Occurred. ' . sprintf('msg: %s, file: %s, %s', $e->getMessage(), $e->getFile(), $e->getLine()));
+            return CResponse::response(Config::get('constants.httpCode.ServerError'), 'Internal Error Occurred. ' . $e->getMessage());
         });
+    }
+
+    private function makeErrorMsg(Throwable $e): string {
+        return sprintf('msg: %s file: %s line: %s', $e->getMessage(), $e->getFile(), $e->getLine());
     }
 }

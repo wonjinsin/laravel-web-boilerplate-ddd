@@ -17,7 +17,7 @@ class UserRepository
      */
     public function getUserList()
     {
-        CLog::info('GetUserList', debug_backtrace());
+        CLog::info('GetUserList', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__));
         $rUsers = User::all();
         return $rUsers;
     }
@@ -28,13 +28,13 @@ class UserRepository
      * @param int $uid
      * @return App\Models\User|App\Utils\CError;
      */
-    public function getUser($uid)
+    public function getUser(int $uid)
     {
-        CLog::info('GetUser', debug_backtrace(), ['uid' => $uid]);
+        CLog::info('GetUser', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid]);
         $rUser = User::find($uid);
 
         if (!$rUser) {
-            CLog::warn('GetUser failed', debug_backtrace(), ['uid' => $uid]);
+            CLog::warn('GetUser failed', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid]);
             return new CError(1404, 'User is not exist');
         }
 
@@ -45,17 +45,17 @@ class UserRepository
      * Update user in storage
      *
      * @param App\Models\User $rUser
-     * @param mixed           $input
+     * @param array           $input
      * @return App\Models\User|App\Utils\CError;
      */
-    public function updateUser($rUser, $input)
+    public function updateUser(\App\Models\User $rUser, array $input)
     {
-        CLog::info('UpdateUser', debug_backtrace(), ['rUser' => $rUser, 'input' => $input]);
+        CLog::info('UpdateUser', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['rUser' => $rUser, 'input' => $input]);
         $rUser->updateUser($input);
         $result = $rUser->save();
 
         if (!$result) {
-            CLog::warn('UpdateUser save failed', debug_backtrace(), ['rUser' => $rUser, 'input' => $input]);
+            CLog::warn('UpdateUser save failed', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['rUser' => $rUser, 'input' => $input]);
             return new CError(1402, 'UpdateUser save failed');
         }
         return $rUser;
@@ -65,17 +65,17 @@ class UserRepository
      * Update user in storage
      *
      * @param App\Models\User $rUser
-     * @param mixed           $input
+     * @param array           $input
      * @return App\Models\User|App\Utils\CError;
      */
-    public function deleteUser($rUser)
+    public function deleteUser(\App\Models\User $rUser)
     {
-        CLog::info('DeleteUser', debug_backtrace(), ['rUser' => $rUser]);
+        CLog::info('DeleteUser', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['rUser' => $rUser]);
 
         $result = $rUser->delete();
         if (!$result) {
-            CLog::warn('DeleteUser failed', debug_backtrace(), ['rUser' => $rUser]);
-            return new CError(1402, 'UpdateUser save failed');
+            CLog::warn('DeleteUser failed', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['rUser' => $rUser]);
+            return new CError(1402, 'Delete failed');
         }
 
         return $rUser;

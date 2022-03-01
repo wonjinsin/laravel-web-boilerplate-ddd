@@ -18,7 +18,7 @@ class AuthService
 	 */
 	public function signup($input)
 	{
-		CLog::info('Signup', debug_backtrace(), ['input' => $input]);
+		CLog::info('Signup', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
 		return AuthRepository::signup($input);
 	}
 
@@ -30,11 +30,11 @@ class AuthService
 	 */
 	public function login($input)
 	{
-		CLog::info('Login', debug_backtrace(), ['input' => $input]);
+		CLog::info('Login', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
 		$rUser = AuthRepository::login($input);
 
 		if ($rUser instanceof CError) {
-			CLog::warn('AuthService login failed', debug_backtrace(), ['input' => $input]);
+			CLog::warn('AuthService login failed', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
 			return $rUser;
 		}
 		return $rUser;

@@ -24,7 +24,7 @@ class LogDomain
 	public function __construct(string $msg = '', array $trace = [], array $info = [])
 	{
 		$this->msg = $msg;
-		$this->trace = count($trace) ? array_shift($trace) : [];
+		$this->trace = count($trace) ? $trace : [];
 		$this->info = $info;
 	}
 

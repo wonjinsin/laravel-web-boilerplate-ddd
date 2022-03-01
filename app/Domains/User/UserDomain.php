@@ -40,7 +40,7 @@ trait UserDomain
      *
      * @return void
      */
-    public function updateUser($input)
+    public function updateUser(array $input)
     {
         if ($this->isEmailUpdatable($input['email'])) {
             $this->setAttribute('email', $input['email']);
@@ -56,7 +56,7 @@ trait UserDomain
      * @param string $email
      * @return bool
      */
-    private function isEmailUpdatable($email): bool
+    private function isEmailUpdatable(string $email): bool
     {
         return isset($email) && $this->getOriginal('email') !== $email;
     }
@@ -67,7 +67,7 @@ trait UserDomain
      * @param string $email
      * @return bool
      */
-    private function isPasswordUpdatable($password): bool
+    private function isPasswordUpdatable(string $password): bool
     {
         return isset($password) && $this->getOriginal('password') !== $this->hashedPassword($password);
     }
@@ -78,7 +78,7 @@ trait UserDomain
      * @param string $password
      * @return bool
      */
-    private function hashedPassword($password): string
+    private function hashedPassword(string $password): string
     {
         return Hash::make($password);
     }
@@ -88,7 +88,7 @@ trait UserDomain
      *
      * @return void
      */
-    public function generateToken()
+    public function setToken()
     {
         $this->setAttribute('token', $this->createToken($this->getAttribute('email'))->plainTextToken);
     }

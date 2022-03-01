@@ -15,18 +15,18 @@ class AuthRepository
     /**
      * Signup user
      *
-     * @param  mixed  $input
+     * @param  array  $input
      * @return App\Models\User|App\Utils\CError;
      */
-    public function signup($input)
+    public function signup(array $input)
     {
-        CLog::info('Signup', debug_backtrace(), ['input' => $input]);
+        CLog::info('Signup', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
         try {
             $input['password'] = Hash::make($input['password']);
             $rUser = User::create($input);
         } catch (Throwable $e) {
-            CLog::warn('Signup Failed. ' . $e->getMessage(), debug_backtrace(), ['input' => $input]);
-            return new CError(1402, 'CreateUser failed');
+            CLog::warn('Signup Failed. ' . $e->getMessage(), CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
+            return new CError(1402, sprintf('CreateUser failed. %s', $e->getMessage()));
         }
 
         return $rUser;
@@ -35,12 +35,12 @@ class AuthRepository
     /**
      * Login user
      *
-     * @param mixed $input
+     * @param array $input
      * @return App\Models\User|App\Utils\CError;
      */
-    public function login($input)
+    public function login(array $input)
     {
-        CLog::info('Login', debug_backtrace(), ['input' => $input]);
+        CLog::info('Login', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
         $rUser = User::where('email', $input['email'])->first();
         if (!$rUser) {
             return new CError(1400, 'Email not exist');
@@ -50,7 +50,7 @@ class AuthRepository
             return new CError(1401, 'Password is invalid');
         }
 
-        $rUser->generateToken();
+        $rUser->setToken();
         return $rUser;
     }
 }

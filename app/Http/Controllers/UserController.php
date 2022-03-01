@@ -22,14 +22,14 @@ class UserController extends Controller
      */
     public function getUserList()
     {
-        CLog::info('[New Request] getUserList', debug_backtrace());
+        CLog::info('[New Request] getUserList', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__));
 
         $rUsers = new UserCollection(UserService::getUserList());
         if ($rUsers instanceof CError) {
             return CResponse::response($rUsers->getHttpCode(), $rUsers->getMsg());
         }
 
-        return CResponse::response(Config::get('constants.httpCode.httpOK'), 'GetuserList OK', $rUsers);
+        return CResponse::response(Config::get('constants.httpCode.OK'), 'GetuserList OK', $rUsers);
     }
 
     /**
@@ -38,16 +38,16 @@ class UserController extends Controller
      * @param  int                  $uid
      * @return \App\Utils\CResponse
      */
-    public function getUser($uid)
+    public function getUser(int $uid)
     {
-        CLog::info('[New Request] getUser', debug_backtrace(), ['uid' => $uid]);
+        CLog::info('[New Request] getUser', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid]);
 
         $rUser = UserService::getUser($uid);
         if ($rUser instanceof CError) {
             return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
-        return CResponse::response(Config::get('constants.httpCode.httpOK'), 'GetUser OK', new UserResource($rUser));
+        return CResponse::response(Config::get('constants.httpCode.OK'), 'GetUser OK', new UserResource($rUser));
     }
 
     /**
@@ -57,33 +57,44 @@ class UserController extends Controller
      * @param  int                      $uid
      * @return \App\Utils\CResponse
      */
-    public function updateUser(Request $request, $uid)
+    public function updateUser(Request $request, int $uid)
     {
-        CLog::info('[New Request] updateUser', debug_backtrace(), ['uid' => $uid, 'input' => $request->input()]);
-
         $input = $request->input();
+        CLog::info('[New Request] updateUser', CLog::getReqTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid, 'input' => $input]);
+        if ($request->user()->id !== $uid) {
+            $error = new CError(1401, 'User is invalid');
+            return CResponse::response($error->getHttpCode(), $error->getMsg());
+        };
+
         $rUser = UserService::updateUser($uid, $input);
         if ($rUser instanceof CError) {
             return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
-        return CResponse::response(Config::get('constants.httpCode.httpOK'), 'UpdateUser OK', new UserResource($rUser));
+        return CResponse::response(Config::get('constants.httpCode.OK'), 'UpdateUser OK', new UserResource($rUser));
     }
 
     /**
      * Remove user from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int                       $uid
      * @return \Illuminate\Http\Response
      */
-    public function deleteUser($uid)
+    public function deleteUser(Request $request, int $uid)
     {
-        CLog::info('[New Request] deleteUser', debug_backtrace(), ['uid' => $uid]);
+        CLog::info('[New Request] deleteUser', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid]);
+
+        if ($request->user()->id !== $uid) {
+            $error = new CError(1401, 'User is invalid');
+            return CResponse::response($error->getHttpCode(), $error->getMsg());
+        };
+
         $rUser = UserService::DeleteUser($uid);
         if ($rUser instanceof CError) {
             return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
-        return CResponse::response(Config::get('constants.httpCode.httpOK'), 'DeleteUser OK', new UserResource($rUser));
+        return CResponse::response(Config::get('constants.httpCode.OK'), 'DeleteUser OK', new UserResource($rUser));
     }
 }

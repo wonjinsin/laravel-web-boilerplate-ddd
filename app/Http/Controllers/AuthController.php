@@ -22,7 +22,7 @@ class AuthController extends Controller
      */
     public function signup(Request $request)
     {
-        CLog::info('[New Request] signup', debug_backtrace(), ['input' => $request->input()]);
+        CLog::info('[New Request] signup', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $request->input()]);
 
         $input = $request->input();
         $rUser = AuthService::signup($input);
@@ -30,7 +30,7 @@ class AuthController extends Controller
             return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
-        return CResponse::response(Config::get('constants.httpCode.httpOK'), 'Signup OK', $rUser);
+        return CResponse::response(Config::get('constants.httpCode.OK'), 'Signup OK', $rUser);
     }
 
     /**
@@ -42,13 +42,13 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        CLog::info('[New Request] login', debug_backtrace(), ['input' => $request->input()]);
+        CLog::info('[New Request] login', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $request->input()]);
 
         $rUser = AuthService::login($request->input());
         if ($rUser instanceof CError) {
             return CResponse::response($rUser->getHttpCode(), $rUser->getMsg());
         }
 
-        return CResponse::response(Config::get('constants.httpCode.httpOK'), 'login OK', new UserResource($rUser));
+        return CResponse::response(Config::get('constants.httpCode.OK'), 'login OK', new UserResource($rUser));
     }
 }

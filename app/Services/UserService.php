@@ -17,7 +17,7 @@ class UserService
      */
     public function getUserList()
     {
-        CLog::info('getUserList', debug_backtrace());
+        CLog::info('GetUserList', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__));
         return UserRepository::getUserList();
     }
 
@@ -27,9 +27,9 @@ class UserService
      * @param int $uid
      * @return App\Models\User|App\Utils\CError;
      */
-    public function getUser($uid)
+    public function getUser(int $uid)
     {
-        CLog::info('getUser', debug_backtrace(), ['uid' => $uid]);
+        CLog::info('GetUser', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid]);
         return UserRepository::getUser($uid);
     }
 
@@ -37,15 +37,16 @@ class UserService
      * Update user in storage
      *
      * @param int   $uid
-     * @param mixed $input
+     * @param array $input
      * @return App\Models\User|App\Utils\CError;
      */
-    public function updateUser($uid, $input)
+    public function updateUser(int $uid, array $input)
     {
-        $rUser = $this->getUser($uid);
+        CLog::info('UpdateUser', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid, 'input' => $input]);
 
+        $rUser = $this->getUser($uid);
         if ($rUser instanceof CError) {
-            CLog::warn('UserService getUser failed', debug_backtrace(), ['uid' => $uid, 'input' => $input]);
+            CLog::warn('UserService getUser failed', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid, 'input' => $input]);
             return $rUser;
         }
 
@@ -58,13 +59,13 @@ class UserService
      * @param int $uid
      * @return App\Models\User|App\Utils\CError;
      */
-    public function deleteUser($uid)
+    public function deleteUser(int $uid)
     {
-        CLog::info('deleteUser', debug_backtrace(), ['uid' => $uid]);
+        CLog::info('DeleteUser', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid]);
 
         $rUser = $this->getUser($uid);
         if ($rUser instanceof CError) {
-            CLog::warn('UserService getUser failed', debug_backtrace(), ['uid' => $uid]);
+            CLog::warn('UserService getUser failed', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['uid' => $uid]);
             return $rUser;
         }
 

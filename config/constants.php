@@ -2,7 +2,7 @@
 
 return [
 	'httpCode' => [
-		'httpOK' => 200,
+		'OK' => 200,
 		'ServerError' => 500
 	]
 ];
