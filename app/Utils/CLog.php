@@ -6,6 +6,7 @@ namespace App\Utils;
 
 use Illuminate\Support\Facades\Log;
 use App\Domains\Logger\LogDomain;
+use Illuminate\Support\Facades\Config;
 use Throwable;
 
 class CLog
@@ -18,7 +19,7 @@ class CLog
      */
     private static function getFormattedString(LogDomain $ld)
     {
-        $str = sprintf('{"trid": "%d", ', TRID);
+        $str = sprintf('{"trid": "%d", ', Config::get('constants.TRID'));
         $str .= $ld->getTrace('method') ? sprintf('"method": "%s", ', $ld->getTrace('method')) : '';
         $str .= $ld->getTrace('uri') ? sprintf('"uri": "%s", ', $ld->getTrace('uri')) : '';
         $str .= $ld->getTrace('status') ? sprintf('"status": "%d", ', $ld->getTrace('status')) : '';
@@ -41,7 +42,7 @@ class CLog
      */
     private static function getErrorString(LogDomain $ld)
     {
-        $str = sprintf('{"trid": "%d", ', TRID);
+        $str = sprintf('{"trid": "%d", ', Config::get('constants.TRID'));
         $str .= $ld->getMsg() ? sprintf('"msg": "%s", ', $ld->getMsg()) : '';
         $str .= $ld->getInfo() ? sprintf('"params": "%s", ', json_encode($ld->getInfo())) : '';
         $str .= sprintf('}');

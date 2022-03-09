@@ -15,7 +15,7 @@ class AuthRepository
     /**
      * Signup user
      *
-     * @param  array  $input
+     * @param array $input
      * @return App\Models\User|App\Utils\CError;
      */
     public function signup(array $input)
@@ -46,7 +46,7 @@ class AuthRepository
             return new CError(1400, 'Email not exist');
         }
 
-        if (!Hash::check($input['password'], $rUser->password)) {
+        if (!$rUser->checkPassword($input['password'])) {
             return new CError(1401, 'Password is invalid');
         }
 

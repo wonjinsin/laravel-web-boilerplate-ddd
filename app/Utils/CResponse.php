@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Utils;
 
 use App\Utils\CLog;
+use Illuminate\Support\Facades\Config;
 
 class CResponse
 {
@@ -19,7 +20,7 @@ class CResponse
      */
     public static function response(int $code = 200, string $msg = 'Error occured', $resultData = null)
     {
-        $array = ['trid' => TRID, 'resultCode' => $code, 'msg' => $msg];
+        $array = ['trid' => Config::get('constants.TRID'), 'resultCode' => $code, 'msg' => $msg];
         if ($resultData) {
             $array['resultData'] = $resultData;
         }

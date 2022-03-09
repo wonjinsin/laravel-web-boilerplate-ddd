@@ -36,51 +36,61 @@ trait UserDomain
     ];
 
     /**
-     * Update UserDomain.
+     * Update userDomain.
      *
      * @return void
      */
     public function updateUser(array $input)
     {
-        if ($this->isEmailUpdatable($input['email'])) {
+        if (isset($input['email']) && $this->isEmailUpdatable($input['email'])) {
             $this->setAttribute('email', $input['email']);
         }
-        if ($this->isPasswordUpdatable($input['password'])) {
-            $this->setAttribute('password', $this->hashedPassword($input['password']));
+        if (isset($input['password']) && $this->isPasswordUpdatable($input['password'])) {
+            $this->setAttribute('password', $this->getHashedPassword($input['password']));
         }
     }
 
     /**
-     * Check Email is updatable.
+     * Check email is updatable.
      *
-     * @param string $email
+     * @param  string $email
      * @return bool
      */
     private function isEmailUpdatable(string $email): bool
     {
-        return isset($email) && $this->getOriginal('email') !== $email;
+        return isset($email) && $this->getAttribute('email') !== $email;
     }
 
     /**
-     * Check Password is updatable.
+     * Check password is updatable.
      *
-     * @param string $email
+     * @param  string $email
      * @return bool
      */
     private function isPasswordUpdatable(string $password): bool
     {
-        return isset($password) && $this->getOriginal('password') !== $this->hashedPassword($password);
+        return isset($password) && $this->getAttribute('password') !== $this->getHashedPassword($password);
     }
 
     /**
-     * Create hashedPassword.
+     * Create getHashedPassword.
      *
-     * @param string $password
-     * @return bool
+     * @param  string $password
+     * @return string
      */
-    private function hashedPassword(string $password): string
+    private function getHashedPassword(string $password): string
     {
         return Hash::make($password);
+    }
+
+    /**
+     * Check password correct.
+     *
+     * @return bool
+     */
+    public function checkPassword($password)
+    {
+        return Hash::check($password, $this->getAttribute('password'));
     }
 
     /**
