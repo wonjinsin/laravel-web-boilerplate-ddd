@@ -43,10 +43,12 @@ class AuthRepository
         CLog::info('Login', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
         $rUser = User::where('email', $input['email'])->first();
         if (!$rUser) {
+            CLog::warn('User not exist', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
             return new CError(1400, 'Email not exist');
         }
 
         if (!$rUser->checkPassword($input['password'])) {
+            CLog::warn('Password not matched', CLog::getTrace(__FUNCTION__, __FILE__, __LINE__), ['input' => $input]);
             return new CError(1401, 'Password is invalid');
         }
 
