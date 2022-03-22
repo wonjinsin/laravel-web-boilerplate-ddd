@@ -119,16 +119,16 @@ class CLog
     public static function getReqTrace(string $function = '', string $file = '', int $line = 0): array
     {
         $arr = self::getTrace($function, $file, $line);
-        $arr['remoteIP'] = $_SERVER['REMOTE_ADDR'];
-        $arr['uri'] = $_SERVER['REQUEST_URI'];
+        $arr['remoteIP'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+        $arr['uri'] = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
         return $arr;
     }
 
     /**
      * Get trace at Result.
      *
-     * @param  int $code
-     * @param  int $code
+     * @param  int        $code
+     * @param  int        $code
      * @param  NULL|array $resultData
      * @return array
      */

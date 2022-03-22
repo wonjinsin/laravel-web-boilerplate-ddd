@@ -12,6 +12,8 @@ class UserControllerTest extends TestCase
 {
     use WithFaker, DatabaseTransactions;
 
+    private $sanctum;
+
     /**
      * Make user.
      *
@@ -19,8 +21,18 @@ class UserControllerTest extends TestCase
      */
     private function makeUser()
     {
-        $user = (new UserFactory())->definition();
+        $user = $this->getUserDefinition();
         return AuthRepository::signup($user);
+    }
+
+    /**
+     * Get user definition
+     *
+     * @return array
+     */
+    private function getUserDefinition(): array
+    {
+        return (new UserFactory())->definition();
     }
 
     /**
@@ -30,8 +42,27 @@ class UserControllerTest extends TestCase
      */
     public function testGetUserList()
     {
-        $user = $this->makeUser();
+        $this->makeUser();
         $response = $this->get('/api/v1/user');
+        $response->assertOk();
+    }
+
+    /**
+     * Test signup.
+     *
+     * @return void
+     */
+    public function testSignUp()
+    {
+        $user = $this->getUserDefinition();
+        $response = $this->postJSON(
+            '/api/v1/auth/signup',
+            [
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'password' => $user['password']
+            ]
+        );
         $response->assertOk();
     }
 
@@ -43,7 +74,51 @@ class UserControllerTest extends TestCase
     public function testGetUser()
     {
         $user = $this->makeUser();
-        $response = $this->get(sprintf('/api/v1/user/%s', $user->uid));
+        $response = $this->get(sprintf('/api/v1/user/%s', $user->id));
         $response->assertOk();
+    }
+
+    /**
+     * Test update user.
+     *
+     * @return void
+     */
+    public function testUpdateUser()
+    {
+        $user = $this->makeUser();
+        $loggedIn = $this->postJSON(
+            '/api/v1/auth/login',
+            [
+                'email' => $user->email,
+                'password' => $this->getUserDefinition()['password']
+            ]
+        );
+        $loggedIn->assertOk();
+
+        $token = $loggedIn['resultData']['token'];
+        $response = $this->putJSON(sprintf('api/v1/user/%s', $user->id), ['name' => 'changed name'], ['Authorization' => sprintf('Bearer %s', $token)]);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Test delete user.
+     *
+     * @return void
+     */
+    public function testDeleteUser()
+    {
+        $user = $this->makeUser();
+        $loggedIn = $this->postJSON(
+            '/api/v1/auth/login',
+            [
+                'email' => $user->email, 
+                'password' => $this->getUserDefinition()['password']
+            ]
+        );
+        $loggedIn->assertOk();
+
+        $token = $loggedIn['resultData']['token'];
+        $response = $this->deleteJSON(sprintf('api/v1/user/%s', $user->id), ['name' => 'changed name'], ['Authorization' => sprintf('Bearer %s', $token)]);
+        $response->assertStatus(200);
     }
 }
